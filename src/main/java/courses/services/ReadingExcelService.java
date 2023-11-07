@@ -20,31 +20,38 @@ import org.jboss.logging.Logger;;
 public class ReadingExcelService {
 
     private static final Logger LOGGER = Logger.getLogger(ReadingExcelService.class);
-    private static final String pathToCourses = "C:/Project/Courses/";
-    public List<MCQ> getQuestionAndAnswer(final String courseName,final String testName) throws IOException {
-        String path = pathToCourses+courseName.split("_")[1]+"/"+testName.split("_")[1]+"/";
-        File testFilePath = new File(path);
-        if(!testFilePath.exists()){
-
-        }
-        String[] testFiles = testFilePath.list();
+    private static final String pathToCourses = "Courses/";
+    public List<MCQ> getQuestionAndAnswer(String pathTotests) throws IOException {
+        pathTotests = pathToCourses +pathTotests;
+        final File testFileDirectory = new File(pathTotests);
         List<MCQ> listOfMcqs = new ArrayList<>();
-        for (String testFile :testFiles){
+
+        if(!testFileDirectory.exists()){
+            LOGGER.error("Path not found for the Courses Directory ->"+pathTotests);
+           return listOfMcqs;
+        }
+        final String[] testFiles = testFileDirectory.list();
+        if (testFiles==null){
+            LOGGER.error("No test file found in this Path ->"+pathTotests);
+            return listOfMcqs;
+        }
+
+        for (final String testFile :testFiles){
              MCQ mcq = new MCQ();
              mcq.setCategory(testFile);
              mcq.setType("MCQ");
-             mcq.setListOfQuestions(readExcelFile(path+testFile));
+             mcq.setListOfQuestions(readExcelFile(pathTotests+testFile));
              listOfMcqs.add(mcq);
         }
         return listOfMcqs;
     }
 
     public List<Questions> readExcelFile(final String testFilePath) throws IOException {
-        File file = new File( testFilePath);
-        FileInputStream fis = new FileInputStream(file);
+        final File file = new File( testFilePath);
+        final FileInputStream fis = new FileInputStream(file);
 
-        XSSFWorkbook wb = new XSSFWorkbook(fis);
-        XSSFSheet sheet = wb.getSheetAt(0);
+        final XSSFWorkbook wb = new XSSFWorkbook(fis);
+        final XSSFSheet sheet = wb.getSheetAt(0);
         Iterator<Row> itr = sheet.iterator();
         List<Questions> listOfQuestions = new ArrayList<>();
         while (itr.hasNext())
