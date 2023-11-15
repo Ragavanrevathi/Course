@@ -1,14 +1,16 @@
 package courses.dao.entity;
 
-import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TestModule")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Module {
 
     @Id
@@ -30,9 +32,6 @@ public class Module {
     @Column(name = "Duration_Of_Test")
     private int duration;
 
-    @ManyToOne
-    @JoinColumn(name = "Module_Test_Id",referencedColumnName = "Test_Id",
-            foreignKey = @ForeignKey(name = "Module_Test_Id",value = ConstraintMode.NO_CONSTRAINT))
-    @JsonbTransient
-    private Test moduleTest;
+
 }
+

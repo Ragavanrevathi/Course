@@ -1,33 +1,31 @@
 package courses.dao.entity;
 
-import jakarta.json.bind.annotation.JsonbTransient;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Date;
 
-@Entity
-@Table(name = "Course")
+
+
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Course {
 
     @Id
-    @Column(name = "Course_Id")
-    private int id;
-    @Column(name = "Course_Name")
+    @GeneratedValue
+    private Number id;
     private String courseName;
-    @Column(name = "Start_Date")
-    private LocalDate startDate;
-    @Column(name = "End_Date")
-    private LocalDate endDate;
-    @Column(name = "NO_OF_TEST")
-    private int numberOfTests;
-
-    /*@OneToMany   @JoinColumn(name = "Test_Course_Id")
-    private List<Test> listOfTests ;*/
+    private Date startDate;
+    private Date endDate;
+    private Number pendingTests;
+    private Number completedTests;
+    private Number numberOfTests;
 
 }
